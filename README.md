@@ -28,8 +28,8 @@ Python 3 · Flask · Flask-Session (server-side sessions) · SQLite via the CS50
 
 ## Run it locally
 ```bash
-git clone https://github.com/<your-username>/<repo-name>.git
-cd <repo-name>
+git clone https://github.com/M1khe1l/YOUR_Book.git
+cd <YOUR_Book>
 
 python3 -m venv .venv
 source .venv/bin/activate        # Windows: .venv\Scripts\activate
