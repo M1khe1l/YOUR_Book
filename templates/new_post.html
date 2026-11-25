@@ -1,0 +1,129 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    New Post
+{% endblock %}
+
+
+{% block main %}
+
+    <div class="container-fluid new-post-container" style>
+        <h5>Create a New Note</h5><br>
+
+        <form id="new-post-form" action="{{ url_for('new_post') }}" method="post" enctype="multipart/form-data">
+
+        <!-- Title -->
+            <div class="form-group">
+                <label for="title">Title:</label><br>
+                <input type="text" name="title" id="new-title" class="form-control" style="width: 100%; text-align: center" required><br><br>
+            </div>
+
+        <!-- Content -->
+            <div class="post-body">
+                <label for="content">Content:</label><br>
+                <textarea id="new-content" name="content" class="form-control" rows="15" cols="200"
+                            style="max-width: 100%; padding: 10px; text-align: justify" required></textarea><br><br>
+                <div id="link-preview" style="margin-top: 10px; color: blue;"></div>
+            </div>
+
+        <!-- File Upload -->
+            <label for="image_file" style="display: block; padding: 5px;">
+                <small>Upload Sumbnail Image (JPG or PNG only):</small>
+            </label>
+            <div class="custom-file-upload" style="height: 80px; display: flex; align-items: center;">
+                <!-- Upload Button -->
+                <label for="image_file" class="btn btn-outline-secondary" style="cursor: pointer;">Upload Image</label>
+                <input type="file" name="image_file" id="image_file" accept=".jpg, .jpeg, .png" style="display: none;">
+
+                <!-- Image Preview -->
+                <div id="image-preview-container" style="margin-left: 15px; display: none; position: relative;">
+                    <img id="image-preview" src="#" alt="Image Preview"
+                         style="max-width: 100px; max-height: 100px; border: 1px solid #ccc; border-radius: 5px;">
+                    <!-- Close Button -->
+                    <span id="clear-preview"
+                        style="display: none; position: absolute; top: -5px; right: -5px;
+                            background: black; color: white; border-radius: 50%;
+                            padding: 2px 5px; font-size: 12px; cursor: pointer;">X</span>
+
+                </div>
+            </div>
+
+            <!-- Submit Button -->
+            <div>
+                <button type="submit" class="btn btn-primary">Submit</button><br><br>
+            </div>
+        </form>
+
+        <!-- Cancel Button -->
+        <form action="/" style="display:inline;">
+            <input type="hidden">
+            <button type="submit" class="btn btn-secondary">Cancel</button>
+        </form>
+    </div>
+
+    <script>
+    // link recognition
+        document.addEventListener("DOMContentLoaded", function () {
+            const textArea = document.getElementById("new-content");
+            const linkPreview = document.getElementById("link-preview");
+            const urlRegex = /(https?:\/\/[^\s]+)/g;
+
+            textArea.addEventListener("keyup", function () {
+                const content = textArea.value;
+                const links = content.match(urlRegex);
+
+                if (links) {
+                    // Generate clickable links
+                    linkPreview.innerHTML = links
+                        .map(url => `<a href="${url}" target="_blank">${url}</a>`)
+                        .join("<br>");
+                } else {
+                    // Clear the preview if no links are found
+                    linkPreview.innerHTML = "";
+                }
+            });
+        });
+    // Upload Image Preview
+        document.getElementById('image_file').addEventListener('change', function(event) {
+            const file = event.target.files[0]; // Get the first uploaded file
+            const previewContainer = document.getElementById('image-preview-container');
+            const previewImage = document.getElementById('image-preview');
+            const clearPreviewButton = document.getElementById('clear-preview');
+
+            // Ensure a valid image file is selected
+            if (file && (file.type === 'image/jpeg' || file.type === 'image/png')) {
+                const reader = new FileReader();
+
+                // Load the file and display it in the img tag
+                reader.onload = function(e) {
+                    previewImage.src = e.target.result; // Set preview image source
+                    previewContainer.style.display = 'block'; // Show the preview container
+                };
+
+                reader.readAsDataURL(file); // Read file as data URL
+
+                // Show the "X" button on hover
+                previewContainer.addEventListener('mouseenter', () => {
+                    clearPreviewButton.style.display = 'block';
+                });
+                previewContainer.addEventListener('mouseleave', () => {
+                    clearPreviewButton.style.display = 'none';
+                });
+
+                // Clear the image preview and reset the input
+                clearPreviewButton.addEventListener('click', () => {
+                    previewImage.src = "#"; // Reset the image source
+                    previewContainer.style.display = 'none'; // Hide the preview container
+                    document.getElementById('image_file').value = ""; // Reset the file input
+                });
+            } else {
+                // If no valid file is selected, hide the preview and reset
+                previewImage.src = "#";
+                previewContainer.style.display = 'none';
+                alert("Please upload a valid image file (JPG or PNG).");
+            }
+        });
+    </script>
+
+{% endblock %}
+

@@ -1,0 +1,111 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    post
+{% endblock %}
+
+{% block main %}
+<!-- imported from index.html -->
+    <div class="container-fluid shadow p-3 mb-5 rounded wrapper">
+        <section class="posts-wrapper">
+
+        <!-- Div For Sumbnail Image and Title -->
+            <div class="blogpost-card post-card">
+                <div class="thumbnail-image">
+                    {% if post["image_url"] %}
+                        <img src="{{ post['image_url'] }}" alt="Image for {{ post['title'] }}" style="max-width: 100%">
+                    {% endif %}
+                </div>
+                <h1>{{ post["title"] }}</h1>
+            </div>
+
+        <!-- Meta Data -->
+            <div class="post-meta">
+                Created on {{ post["created_at"] | datetimeformat }}
+            </div>
+
+        <!-- Content -->
+            <div class="post-body">
+                <p style="white-space: pre-wrap; text-align: justify">{{ post["content"] | safe }}</p>
+            </div>
+            <br><br><br>
+        </section>
+
+    <!-- Created at -->
+        <div>
+            <p style="text-align: right; font-style: italic;"><small>
+                <i class="fa fa-calendar"></i>
+                Created &nbsp;by &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <i class="fa fa-user"></i>&nbsp;
+                <span class="author_name">{{ post["author"] }}</span>&nbsp;&nbsp;
+            </small></p><br><br>
+        </div>
+    </div>
+
+<!-- Back and Save buttons -->
+    <div class="d-flex justify-content-between align-items-center mt-3" style="margin-left: 30px;">
+    <!-- Back Button -->
+        <form action="{{ url_for('public') }}" method="get">
+            <button type="submit" class="btn btn-outline-secondary btn-sm">
+                Back
+            </button>
+        </form>
+
+        {% if session["user_id"] %}
+        <!-- Save Button -->
+            <button type="button" style="margin-right: 30px;" class="btn btn-outline-primary btn-sm" id="save-button"
+                    data-post-id="{{ post['id'] }}"
+                    {% if saved %}data-saved="true" class="btn btn-outline-secondary btn-sm"{% endif %}>
+                <i class="fa fa-flag"></i> {% if saved %}Saved{% else %}Save{% endif %}
+            </button>
+        {% endif %}
+    </div>
+
+
+    <script>
+    // Link recognition
+        document.addEventListener("DOMContentLoaded", function() {
+            const postBody = document.querySelector(".post-body p");
+            const urlRegex = /(https?:\/\/[^\s]+)/g;
+            postBody.innerHTML = postBody.innerHTML.replace(urlRegex, function(url) {
+                return `<a href="${url}" target="_blank">${url}</a>`;
+            });
+        });
+
+    // "Save" button behavior
+        document.addEventListener("DOMContentLoaded", function() {
+            const saveButton = document.getElementById("save-button");
+
+            saveButton.addEventListener("click", function () {
+                const postId = saveButton.dataset.postId;
+                const isSaved = saveButton.dataset.saved === "true";
+
+                fetch("/toggle_save", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ post_id: postId }),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        if (data.action === "saved") {
+                            saveButton.innerHTML = '<i class="fa fa-flag-checkered"></i> Saved';
+                            saveButton.dataset.saved = "true";
+                            saveButton.classList.replace("btn-outline-primary", "btn-outline-secondary");
+                        } else if (data.action === "unsaved") {
+                            saveButton.innerHTML = '<i class="fa fa-flag"></i> Save';
+                            saveButton.dataset.saved = "false";
+                            saveButton.classList.replace("btn-outline-secondary", "btn-outline-primary");
+                        }
+                    } else {
+                        alert("Failed to toggle save status: " + data.error);
+                    }
+                })
+                .catch(error => {
+                    alert("An error occurred: " + error.message);
+                });
+            });
+        });
+    </script>
+
+{% endblock %}

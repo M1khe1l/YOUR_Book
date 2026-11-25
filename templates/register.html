@@ -1,0 +1,34 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Register
+{% endblock %}
+
+{% block main %}
+    <div class="d-flex justify-content-center align-items-center min-vh-100 register">
+        <form action="/register" method="post">
+            <div class="mb-3">
+                <input autocomplete="off" autofocus class="form-control mx-auto w-auto" name="username" placeholder="Username" type="text">
+            </div>
+            <!-- Password input -->
+            <div class="mb-3 position-relative">
+                <input id="reg_password" class="form-control mx-auto w-auto" name="password" placeholder="Password" type="password"
+                    pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                    required title="Password must contain at least one uppercase letter, one lowercase letter, one number, and be at least 8 characters long.">
+                <button type="button" class="btn btn-outline-secondary btn-sm position-absolute"
+                    style="top: 50%; right: -20%; transform: translateY(-50%);"
+                    onclick="togglePasswordVisibility()">
+                    <i id="toggle-eye-icon" class="fas fa-eye-slash"></i>
+                </button>
+            </div>
+            <div class="mb-3">
+                <input id="reg_confirm" class="form-control mx-auto w-auto" name="confirm" placeholder="Confirm" type="password">
+            </div>
+            <button class="btn btn-primary" type="submit">Register</button>
+
+            <p style="font-family: serif;">If you already have account,  <a href="{{ url_for('login') }}">log in</a></p>
+        </form>
+        <div class="mb-3">
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,13 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Local data: never commit real users or sessions
+flask_session/
+
+
+# macOS / editor
+.DS_Store
+.vscode/

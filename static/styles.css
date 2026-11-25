@@ -1,0 +1,430 @@
+/* Size for brand */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+main {
+    padding-top: 80px;
+}
+
+.navbar {
+    background-color: #e7e7f7 !important;
+}
+
+.top-nav {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 200;
+}
+#up-panel {
+    display: none; /* Hide the div on screens wider than 800px */
+}
+#left-panel {
+    position: fixed;
+    display: flex;
+    flex-direction: column; /* Stack elements vertically */
+    align-items: center;   /* Horizontally center the elements */
+    justify-content: center; /* Vertically center the elements */
+    height: 100%;          /* Ensure the panel takes the full height */
+    padding-bottom: 80px;
+}
+#left_panel .dropdown {
+    margin-bottom: 10px;   /* Add spacing between the dropdown buttons */
+    width: 100%;            /* Adjust width as needed for uniformity */
+}
+#left-panel .dropdown button {
+    width: 100%;        /* Set a fixed width for all buttons */
+    height: 40px;        /* Set a fixed height for all buttons */
+    text-align: center;  /* Align text to the center */
+}
+#left-panel .dropdown {
+    text-align: left;
+}
+
+#left-panel .dropdown .left-title-list {
+    font-weight: bold;
+    font-family: "Times New Roman";
+}
+
+#up-panel .dropdown-menu .dropdown-item,
+#left-panel .dropdown-menu .dropdown-item {
+    display: block;
+    white-space: nowrap; /* Prevent wrapping */
+    overflow: hidden; /* Hide overflowed text */
+    text-overflow: ellipsis; /* Add ellipsis for overflowed text */
+    max-width: 100%; /* Ensure it respects the menu's width */
+}
+
+nav .navbar-brand {
+    font-size: x-large;
+}
+
+/* Colors for brand */
+nav .navbar-brand .blue, .welcome-container .blue{
+    color: #537fbe;
+}
+
+nav .navbar-brand .red, .welcome-container .red {
+    color: #ea433b;
+}
+
+nav .navbar-brand .yellow, .welcome-container .yellow {
+    color: #f5b82e;
+}
+
+nav .navbar-brand .green, .welcome-container .green{
+    color: #2e944b;
+}
+
+nav {
+    background-color: lightgrey;
+}
+
+body {
+    background: #f4f4f4;
+}
+
+h1 {
+    font-size: 25px;
+}
+h2 {
+    font-size: 20px;
+}
+.wrapper p {
+    font-family: Serif;
+}
+.post-body textarea {
+    font-family: Serif;
+}
+/* Navbar Links */
+.nav-link {
+    position: relative;
+    /* Remove default underline */
+    text-decoration: none;
+    /* Retain original color */
+    color: inherit;
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;         /* Position underline slightly below the text */
+    left: 0;
+    width: 0%;            /* Start with 0% width */
+    height: 2px;          /* Thickness of the underline */
+    background-color: green;
+    transition: width 0.5s ease;  /* Smooth transition on width */
+}
+
+.nav-link:hover::after {
+    width: 100%;          /* Full width on hover */
+}
+
+/* Flash message */
+#flash-message {
+    position: fixed;
+    top: 30;
+    left: 0;
+    width: 100%;
+    z-index: 1000;  /* Ensure it appears above other elements */
+    background-color: rgba(228, 241, 254, 0.8);    /* blue with slight transparency */
+    padding: 15px;
+    text-align: center;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+}
+/* Flash Message Styles */
+#flash-container {
+    position: fixed;
+    top: 60px; /* Adjust based on navbar height */
+    z-index: 1050; /* Ensure it appears above the content */
+    padding: 10px;
+}
+
+.alert {
+    background-color: rgba(228, 241, 254, 0.8);    /* blue with slight transparency */
+}
+
+/* Welcome Page styles */
+.welcome-container {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    display: absolute;
+    justify-content: center;
+    align-items: center;
+    background: url('uploads/welcome_1.jpg') no-repeat center center/cover;
+    text-align: center;
+    border-radius: 20px;
+}
+
+.welcome-body {
+    padding-top: 300px;
+    height: 100%;
+    background: rgba(255,255,255,0.5);
+    border-radius: 20px;
+}
+
+.welcome-body h1, h2, h3, p {
+    font-family: serif;
+}
+
+/* thumbnail image */
+.blogpost-card .thumbnail-image > img{
+    width: 100%;
+    height:320px;
+    object-fit: cover;
+}
+
+/* Post title h1 */
+.blogpost-card h1 {
+    font-size: 36px;
+    font-family: "dancing script", cursive;
+    margin: 42px 0 12px 0;
+}
+
+.post-meta {
+    font-size: 14px;
+    background: #444;
+    color: #fcfcfc;
+    display: inline-block;
+    padding: 4px 16px;
+    border-radius: 2px;
+    margin-left: 20px;
+    margin-bottom: 24px;
+}
+
+/* "View Post" Button */
+.index-post-body {
+    height: 180px;
+    overflow: hidden;
+    position: relative;
+}
+
+.index-post-body::after{
+    content: "";
+    height: 100px;
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    background: rgb(244,244,244);
+    background: linear-gradient(
+        0deg,
+        rgba(244,244,244,1) 0%,
+        rgba(244,244,244,0.5) 48%,
+        rgba(244,244,244,0) 77%,
+        rgba(244,244,244,0) 100%);
+    pointer-events: none;           /* Ensure gradient doesn't block interactions */
+}
+
+.custom-file-upload {
+    position: relative;
+}
+
+.custom-file-upload input[type="file"] {
+    display: none; /* Hide the default input */
+}
+
+.custom-file-upload .btn {
+    font-size: 14px;
+    padding: 8px 15px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+/* Delete Confirmation Window styles */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    width: 300px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 15px;
+}
+
+.modal-actions .btn {
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    border-radius: 4px;
+}
+
+/* "new-post" link preview */
+#link-preview a {
+    text-decoration: none;
+    font-family: serif;
+    color: #007bff;
+}
+
+#link-preview a:hover {
+    text-decoration: underline;
+}
+/* Aothor name styles */
+.author_name {
+    font-weight: bold;
+    font-style: serif;
+    font-size: 20px;
+}
+
+/* Profile Setting styles */
+img.rounded-circle {
+    border: 2px solid #ddd;
+    padding: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* avatar image stiling */
+.avatar-container img.rounded-circle {
+    width: 50px;
+    height: 50px;
+    transition: transform 0.2s ease-in-out;
+}
+
+.avatar-container img.rounded-circle:hover {
+    transform: scale(1.2); /* Slight zoom effect on hover */
+}
+/* Avatar Dropdown Menu Styling */
+.avatar-container .dropdown-menu {
+    padding: 0;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.avatar-container .dropdown-item {
+    padding: 10px 20px;
+    font-size: 16px;
+    color: #333;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.avatar-container .dropdown-item:hover {
+    background-color: #f0f0f0;
+    color: #000;
+}
+
+/* Logout Button Styling */
+.dropdown-item.text-danger:hover {
+    background-color: #ffdddd;
+    color: #ff0000;
+}
+
+/* Align buttons in a single row */
+.d-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Save Button Styling */
+#save-button i {
+    margin-right: 5px;
+}
+
+#save-button {
+    transition: background-color 0.3s, color 0.3s;
+}
+
+#save-button:hover {
+    background-color: #e2e6ea;
+    color: #0056b3;
+}
+
+/* Scroll Up To Top button styles */
+#scrollToTop button {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #73A6FF;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+#scrollToTop button:hover {
+    background-color: #2065DD;
+}
+
+/* Larger Screen styles */
+@media (min-width: 800px){
+    main {
+        padding-left: 15%;
+        padding-right: 10%;
+    }
+    .new-post-container {
+        padding-top: 30px;
+    }
+    .avatar {
+        top: -15px;
+    }
+    .post-card .thumbnail-image > img {
+        height: 500px;
+    }
+    /* Flash Message Styles */
+    #flash-container {
+        left: 15%; /* Align to the right of the left panel */
+        width: 75%; /* Remaining screen width */
+    }
+    .login {
+        padding-right: 15%;
+    }
+    .register {
+        padding-right: 15%;
+    }
+}
+
+/* Smaller Screen styles */
+@media (max-width: 799px) {
+    .avatar-container img.rounded-circle {
+        width: 70px;
+        height: 70px;
+        transition: transform 0.2s ease-in-out;
+    }
+    #left-panel {
+        display: none;
+    }
+    #up-panel {
+        display: flex; /* Show the div on screens 799px and smaller */
+        flex-direction: column; /* Stack the dropdown buttons vertically */
+        gap: 10px; /* Add some spacing between dropdowns */
+    }
+    #flash-container {
+        width: 100%;
+    }
+    .blogpost-card .thumbnail-image > img{
+        width: 100%;
+        height:100px;
+        object-fit: cover;
+    }
+    .post-card .thumbnail-image > img {
+        height: 150px;
+    }
+    .blogpost-card h1 {
+        font-size: 25px;
+        font-family: "dancing script", cursive;
+        margin: 15px 0 12px 0;
+    }
+    .post-meta {
+        font-size: 10px;
+    }
+}

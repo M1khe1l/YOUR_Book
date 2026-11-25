@@ -1,0 +1,45 @@
+
+{% extends "layout.html" %}
+
+{% block title %}
+    Delete Account
+{% endblock %}
+
+{% block main %}
+    <div>
+        <br>
+        <div class="container mt-4 profile">
+            <p class="text-center mb-4" style="font-family: serif; font-size: 18px;">
+                <strong>{{ user["username"] }}</strong>, we are sorry you are leaving us.
+            </p>
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <!-- DELETE ACCOUNT form -->
+                    <form action="/delete_account" method="post">
+                        <br>
+                        <p>
+                            We would like to inform you that if you <strong>delete</strong> your account,
+                            there will be <strong>No Way Back</strong>.
+                        </p>
+
+                        <br><br>
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="deletePosts" name="delete_posts" value="yes">
+                            <label class="form-check-label" for="deletePosts">
+                                <p>&nbsp;&nbsp;Also delete my published posts</p>
+                            </label>
+                        </div>
+                        <br>
+                        <p style="color: gray;">Please enter your password to delete the account:</p>
+                        <div class="form-group" style="margin-bottom: 15px;">
+                            <input type="password" class="form-control" name="password" placeholder="Enter Password" required>
+                        </div>
+                        <button type="submit" class="btn btn-outline-success mt-3">Confirm Delete</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+

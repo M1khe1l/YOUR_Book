@@ -1,0 +1,66 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    home
+{% endblock %}
+
+{% block main %}
+    <div style="display: flex; height: 100%;">
+
+        <!-- Main Content -->
+        <div style="flex: 1; overflow-y: auto;">
+            <div class="container-fluid p-3 mb-5 rounded">
+                <div style="background-color: #a7afc1; padding: 0.1%; text-align: center">
+                    <br><h2>Search Result For " {{ q }} " </h2><br>
+                </div>
+            </div>
+            <!-- My Posts  -->
+            {% for post in posts %}
+                <div class="container-fluid shadow p-3 mb-5 rounded wrapper">
+                    <section class="posts-wrapper">
+                    <!-- Sumbnail Image and Title -->
+                        <div class="blogpost-card">
+                            <div class="thumbnail-image">
+                                {% if post["image_url"] %}
+                                <img src="{{ post['image_url'] }}" alt="Image for {{ post['title'] }}" style="max-width: 100%">
+                                {% endif %}
+                            </div>
+                            <h1>{{ post["title"] }}</h1>
+                        </div>
+                    <!-- Meta Data -->
+                        <div class="post-meta">
+                            Created on {{ post["created_at"] | datetimeformat }}
+                        </div>
+                    <!-- Content -->
+                        <div class="post-body index-post-body">
+                            <p style="white-space: pre-wrap; text-align: justify; padding: 10px;">{{ post["content"] | safe }}</p>
+                        </div>
+                        <br>
+                    <!-- "View Post" button -->
+                        <div class="read-more-container">
+                            <form action="{{ url_for('post') }}" method="get" style="text-align: left;">
+                                <input type="hidden" name="post_id" value="{{ post['id'] }}"></input>
+                                <button type="submit" class="btn btn-outline-secondary btn-sm">View Post</button>
+                            </form>
+                        </div>
+                        <br>
+                    </section>
+                </div>
+                <hr>
+            {% endfor %}
+        </div>
+    </div>
+    <script>
+        // Link recognition
+        document.addEventListener("DOMContentLoaded", function() {
+            const postBodies = document.querySelectorAll(".post-body p");
+            postBodies.forEach(postBody => {
+                const urlRegex = /(https?:\/\/[^\s]+)/g;
+                postBody.innerHTML = postBody.innerHTML.replace(urlRegex, function(url) {
+                    return `<a href="${url}" target="_blank">${url}</a>`;
+                });
+            });
+        });
+    </script>
+
+{% endblock %}

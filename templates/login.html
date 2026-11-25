@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Log In
+{% endblock %}
+
+{% block main %}
+    <div class="d-flex justify-content-center align-items-center min-vh-100 login">
+        <form action="/login" method="post">
+            <div class="mb-3">
+                <input autocomplete="off" autofocus class="form-control mx-auto w-auto" name="username" placeholder="Username" type="text">
+            </div>
+            <div class="mb-3 position-relative">
+                <input id="log_password" class="form-control mx-auto w-auto" name="password" placeholder="Password" type="password">
+                <button type="button" class="btn btn-outline-secondary btn-sm position-absolute"
+                    style="top: 50%; right: -20%; transform: translateY(-50%);"
+                    onclick="PasswordVisibility()">
+                    <i id="toggle-eye-icon" class="fas fa-eye-slash"></i>
+                </button>
+            </div>
+            <button class="btn btn-primary" type="submit">Log In</button>
+        </form>
+    </div>
+
+{% endblock %}

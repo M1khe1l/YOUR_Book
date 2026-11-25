@@ -1,0 +1,150 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    post
+{% endblock %}
+
+{% block main %}
+<!-- imported from index.html -->
+    <div class="container-fluid shadow p-3 mb-5 rounded wrapper">
+        <section class="posts-wrapper">
+
+        <!-- Div For Sumbnail Image and Title -->
+            <div class="blogpost-card post-card">
+                <div class="thumbnail-image">
+                    {% if post["image_url"] %}
+                    <img src="{{ post['image_url'] }}" alt="Image for {{ post['title'] }}" style="max-width: 100%">
+                    {% endif %}
+                </div>
+                <h1>{{ post["title"] }}</h1>
+            </div>
+
+        <!-- Meta Data -->
+            <div class="post-meta">
+                Created on {{ post["created_at"] | datetimeformat }}
+            </div>
+
+        <!-- Content -->
+            <div class="post-body">
+                <p style="white-space: pre-wrap; text-align: justify">{{ post["content"] | safe }}</p>
+            </div>
+            <br><br><br><br><br>
+        </section>
+
+    <!-- Edit, Delete, Switch buttons -->
+        <div>
+        <!-- Edit, Delete, Switch, buttons -->
+            <div>
+                <form action="{{ url_for('edit_post') }}" method="get" style="display:inline;">
+                    <input type="hidden" name="post_id" value="{{ post['id'] }}">
+                    <button type="submit" class="btn btn-outline-primary btn-sm">Edit</button>
+                </form>
+                <form id="delete-form-{{ post['id']}}" action="{{ url_for('delete_post') }}" method="post" style="display:inline;">
+                    <input type="hidden" name="post_id" value="{{ post['id'] }}">
+                    <button type="button" class="btn btn-outline-danger delete-button btn-sm" onclick='confirmDelete({{ post["id"] }})'>Delete</button>
+                </form>
+                <br><br>
+            <!-- Private/Public Switch -->
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" id="privacy-switch-{{ post['id'] }}"
+                        {% if post['is_public'] %}checked{% endif %}
+                        onclick="togglePrivacy({{ post['id'] }}, this.checked)">
+                    <label class="form-check-label" for="privacy-switch-{{ post['id'] }}">
+                        <span id="privacy-label-{{ post['id'] }}">
+                            {% if post['is_public'] %}Public{% else %}Private{% endif %}
+                        </span>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!-- Back -->
+    <div class="container-fluid p-3 mb-5 rounded">
+        <form action="{{ url_for('index') }}" method="get" style="text-align: left;">
+            <input type="hidden"></input>
+            <button type="submit" class="btn btn-outline-secondary btn-sm">Back</button>
+        </form>
+    </div>
+<!-- End of imported  -->
+
+<!-- Delete Confirmation Modal -->
+    <div id="delete-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <p>Are you sure you want to delete the post?</p>
+            <div class="modal-actions">
+                <button id="confirm-delete" class="btn btn-outline-danger">Yes</button>
+                <button id="cancel-delete" class="btn btn-outline-secondary">No</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+// Link recognition
+        document.addEventListener("DOMContentLoaded", function() {
+            const postBody = document.querySelector(".post-body p");
+            const urlRegex = /(https?:\/\/[^\s]+)/g;
+            postBody.innerHTML = postBody.innerHTML.replace(urlRegex, function(url) {
+                return `<a href="${url}" target="_blank">${url}</a>`;
+            });
+        });
+
+// Delete confirmation
+        let postIdToDelete = null;
+
+        function confirmDelete(postId) {
+        // Store the post ID in a variable
+            postIdToDelete = postId;
+
+        // Show the modal
+            document.getElementById('delete-modal').style.display = 'flex';
+        }
+
+    // Close the modal without deleting
+        document.getElementById('cancel-delete').addEventListener('click', function() {
+            document.getElementById('delete-modal').style.display = 'none';
+            postIdToDelete = null;
+        });
+
+    // Confirm delete
+        document.getElementById('confirm-delete').addEventListener('click', function() {
+            if (postIdToDelete) {
+            // Submit the form to delete the post
+                document.getElementById("delete-form-" + postIdToDelete).submit();
+            }
+        });
+
+// Handle the Switch Toggle
+        function togglePrivacy(postId, isPublic) {
+            const statusLabel = document.getElementById('privacy-label-' + postId);
+            const newStatus = isPublic ? "Public" : "Private";
+            statusLabel.textContent = newStatus;
+
+        // Send a request to update the privacy status in the database
+            fetch("/toggle_privacy", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ post_id: postId, is_public: isPublic }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    console.log(`Post ${postId} is now ${newStatus}`);
+                } else {
+                    alert("An error occurred while updating privacy.");
+                    // Revert the toggle in case of failure
+                    document.getElementById('privacy-switch-' + postId).checked = !isPublic;
+                }
+            })
+            .catch(error => {
+                alert("An error occurred while updating privacy.");
+                document.getElementById('privacy-switch-' + postId).checked = !isPublic;
+            });
+        }
+    </script>
+
+{% endblock %}
+
+
