@@ -1,7 +1,9 @@
 # YOUR BOOK
 #### Video Demo:  [[ youtube_link](https://www.youtube.com/watch?v=WqpdWcGZsN8)]
+
 #### Description:
- - This project is a web-based application using JavaScript, Python, and SQLite. It is a blogging platform where users can explore and share ideas through published notes.The website provides a place to read posts shared by others, create personalized notes, and publish content for public viewing.
+
+ - A multi-user blogging platform where people write private notes, publish the ones they want to share, and save other people's published notes. Built with Flask, SQLite and Bootstrap as my final project for [CS50x](https://cs50.harvard.edu/x/).
 
 ## Design Choices:
 - **Database Design:** Focused on modularity and flexibility, using separate tables for users, posts, and saved items.
@@ -20,18 +22,45 @@
    - Privacy controls to make posts public or private.
    - "Save" functionality for users to bookmark their favorite posts.
 
-## How to Use:
-   - From project directory, in terminal window run `flask run` and open provided link in browser.
+## Tech stack
+Python 3 · Flask · Flask-Session (server-side sessions) · SQLite via the CS50 `SQL` library · Jinja2 · Bootstrap 5 · vanilla JavaScript (fetch API) · Font Awesome
+
+
+## Run it locally
+```bash
+git clone https://github.com/<your-username>/<repo-name>.git
+cd <repo-name>
+
+python3 -m venv .venv
+source .venv/bin/activate        # Windows: .venv\Scripts\activate
+pip install -r requirements.txt
+
+flask run
+```
+
+## Project structure
+```
+app.py              Flask routes and helpers
+blog.db             Database (users, posts, saved)
+requirements.txt    Python dependencies
+templates/          Jinja templates; layout.html is the shared base
+static/
+  styles.css        Custom styles on top of Bootstrap
+  blog.js           Password show/hide, scroll-to-top button
+  uploads/          Thumbnails and avatar
+```
+
 
 ## File Overview:
 ### **app.py**
    - The main Flask application file.
    - Contains routes for user registration, authentication, post management, and more.
 ### **blog.db**
-   - Sqlite database which contains differens tables:
-      - users - contains unique id, username, hash and profile_image columns.
-      - posts - contains posts informations like id, author, title, content, image_url etc.
-      - saved - contains id of the saved post and id of user who saved that post.
+| Table   | Purpose |
+|---------|---------|
+| `users` | id, unique username, password hash, optional avatar path |
+| `posts` | id, owner, author name, title, content, image, created_at, `is_public` flag |
+| `saved` | one row per (user, post) bookmark, unique together |
 ### **templates/**
    - Folder that contains all html files, used in the project.
    - #### 404.html
@@ -75,3 +104,7 @@
       - Javascript file linked in layout.html. It also applies to other html files where layout.html file is extended.
    - #### styles.css
       - Css style folder linked in layout.html. It also applies to other html files where layout.html file is extended.
+
+## Author
+Created by Mikheil Akobidze as the final project of CS50x.
+
